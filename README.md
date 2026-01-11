@@ -61,21 +61,21 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## 🚀 MVP Roadmap
 
-### Phase 1: Data Scaffolding (The "Plumbing")
+### Phase 1: Data Scaffolding
 - [x] Initialize Next.js project with Tailwind + Shadcn/UI.
 - [ ] Create API routes for Steam (`/api/steam`) and BGG (`/api/bgg`).
-- [ ] Implement XML-to-JSON parser for BGG data.
-- [ ] Basic "Library View" displaying raw lists fetched from both platforms.
-- [ ] Save in localStorage to avoid duplicate calls
+- [x] Implement XML-to-JSON parser for BGG data.
+- [x] Basic "Library View" displaying raw lists fetched from both platforms.
+- [ ] Save library in localStorage to avoid duplicate calls
 
-### Phase 2: The Suggestion Engine (The "Brain")
+### Phase 2: The Suggestion Engine
 - [ ] Build the `matchEngine` utility to find patterns in categories/mechanics.
 - [ ] Implement search for games and board games separately by tags/categories filtering out already owned games
 
-### Phase 3: Mobile-First Experience (The "Vibe")
-- [ ] Design "Suggestion Cards" with high-quality imagery from BGG/Steam CDN.
-- [ ] Deploy to Railway with automatic CI/CD from main branch.
+### Phase 3: Mobile-First Experience
+- [ ] Design "Suggestion Cards" with content from API integrations
+- [ ] UI/UX improvements post-POC
 
 ### Phase 4: Polish & Persistence
 - [ ] PostgreSQL integration for sign up
-- [ ] AI enhanced search
+- [ ] AI enhanced search, automated suggestion notifications
