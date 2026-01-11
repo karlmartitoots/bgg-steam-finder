@@ -1,10 +1,10 @@
-# bgg-steam-finder 🛰️🎲
+# boardgame-steam-finder 🛰️🎲
 
 A unified recommendation engine that bridges the gap between physical tabletop libraries and digital Steam collections.
 
 ## The Vision
 
-I have a collection of board games on BoardGameGeek (BGG) and a video game library on Steam. Often, the "vibe" or mechanics I enjoy in one medium (e.g., Deck Building, Resource Management, Dungeon Crawling) translate perfectly to the other. This app analyzes both libraries to suggest what I should play next or what I’m missing from my collection.
+I have a collection of board games on BoardGameGeek and a video game library on Steam. Often, the "vibe" or mechanics I enjoy in one medium (e.g., Deck Building, Resource Management, Dungeon Crawling) translate to the other. This app analyzes both libraries to suggest what I should play next or what I’m missing from my collection.
 
 ## POC Goals
 
