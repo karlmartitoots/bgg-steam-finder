@@ -7,4 +7,5 @@ export interface UnifiedGame {
   playingTime?: string; // For BGG (e.g. "30") representing minutes
   playtimeHours?: number; // For Steam (e.g. 12.5) representing hours
   source: 'bgg' | 'steam';
+  tags?: string[];
 }

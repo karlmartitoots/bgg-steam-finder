@@ -9,6 +9,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RefreshCw, Gamepad2, Dice5, Monitor } from "lucide-react";
 import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
 import { UnifiedGame } from "@/lib/types";
 
 export default function Home() {
@@ -173,6 +174,21 @@ export default function Home() {
                     </>
                 )}
             </div>
+            {game.source === 'steam' && game.tags && (
+                <div className="mt-3 flex flex-wrap gap-1">
+                    {game.tags.length > 0 ? (
+                        game.tags.map(tag => (
+                            <Badge key={tag} variant="secondary" className="text-[10px] h-5 px-1.5">
+                                {tag}
+                            </Badge>
+                        ))
+                    ) : (
+                            <Badge variant="outline" className="text-[10px] h-5 px-1.5 text-muted-foreground border-dashed">
+                            No Tags
+                        </Badge>
+                    )}
+                </div>
+            )}
         </CardContent>
         </Card>
       );
