@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { UnifiedGame } from '@/lib/types';
+import { enrichGames } from '@/lib/services/steamEnricher';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -37,7 +38,8 @@ export async function GET(request: NextRequest) {
         source: 'steam'
       }
     ];
-    return NextResponse.json({ games: mockGames });
+    const enrichedMockGames = await enrichGames(mockGames);
+    return NextResponse.json({ games: enrichedMockGames });
   }
 
   const apiKey = process.env.STEAM_API_KEY;
@@ -106,7 +108,9 @@ export async function GET(request: NextRequest) {
       source: 'steam'
     }));
 
-    return NextResponse.json({ games });
+    const enrichedGames = await enrichGames(games);
+
+    return NextResponse.json({ games: enrichedGames });
 
   } catch (error) {
     console.error("Steam API Error", error);

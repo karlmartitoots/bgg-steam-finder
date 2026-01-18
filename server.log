@@ -7,7 +7,12 @@
 - Network:       http://192.168.0.2:3000
 
 ✓ Starting...
-✓ Ready in 1097ms
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+✓ Ready in 1055ms
 ○ Compiling / ...
- GET / 200 in 6.5s (compile: 5.8s, render: 636ms)
- GET /api/steam?steamId=mock 200 in 397ms (compile: 342ms, render: 56ms)
+ GET / 200 in 5.4s (compile: 5.1s, render: 367ms)
+ GET /api/steam?steamId=mock 200 in 990ms (compile: 573ms, render: 417ms)
