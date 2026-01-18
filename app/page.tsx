@@ -3,9 +3,8 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RefreshCw, Gamepad2, Dice5, Monitor } from "lucide-react";
 import { toast } from "sonner";
@@ -129,84 +128,79 @@ export default function Home() {
 
   const renderGameCard = (game: UnifiedGame) => {
       const isSteam = game.source === 'steam';
-      const borderColor = isSteam ? "border-blue-500/50 hover:border-blue-500" : "border-amber-700/50 hover:border-amber-700";
+      const borderClass = isSteam ? "border-l-4 border-l-blue-500" : "border-l-4 border-l-amber-700";
 
       return (
-        <Card key={`${game.source}-${game.id}`} className={`overflow-hidden hover:shadow-lg transition-all border-2 ${borderColor}`}>
-        <div className="relative">
-            <AspectRatio ratio={1}>
-            {game.thumbnail ? (
-                <img
-                src={game.thumbnail}
-                alt={game.name}
-                className="object-cover w-full h-full"
-                loading="lazy"
-                />
-            ) : (
-                <div className="flex items-center justify-center w-full h-full bg-muted text-muted-foreground">
-                    No Image
-                </div>
-            )}
-            {/* Badge for source distinction */}
-            <div className={`absolute top-2 right-2 px-2 py-1 text-xs font-bold text-white rounded shadow ${isSteam ? 'bg-blue-600' : 'bg-amber-700'}`}>
-                {isSteam ? 'STEAM' : 'BGG'}
-            </div>
-            </AspectRatio>
-        </div>
-        <CardContent className="p-4">
-            <h3 className="font-semibold truncate" title={game.name}>
-            {game.name}
-            </h3>
-            <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
-                {isSteam ? (
-                    <>
-                     <span>Digital</span>
-                     <span>{game.playtimeHours} hrs played</span>
-                    </>
+        <Card key={`${game.source}-${game.id}`} className={`overflow-hidden hover:shadow-md transition-all ${borderClass}`}>
+          <div className="flex flex-row p-4 gap-4 items-center h-full">
+            <div className="flex-shrink-0 w-20 h-20">
+                {game.thumbnail ? (
+                    <img
+                    src={game.thumbnail}
+                    alt={game.name}
+                    className="w-full h-full object-cover rounded-md shadow-sm"
+                    loading="lazy"
+                    />
                 ) : (
-                    <>
-                    <span>
-                    {game.minPlayers}-{game.maxPlayers} Players
-                    </span>
-                    <span>
-                    {game.playingTime} min
-                    </span>
-                    </>
+                    <div className="flex items-center justify-center w-full h-full bg-muted text-muted-foreground rounded-md text-xs">
+                        No Img
+                    </div>
                 )}
             </div>
-            {game.source === 'steam' && game.tags && (
-                <div className="mt-3 flex flex-wrap gap-1">
-                    {game.tags.length > 0 ? (
-                        game.tags.map(tag => (
-                            <Badge key={tag} variant="secondary" className="text-[10px] h-5 px-1.5">
-                                {tag}
-                            </Badge>
-                        ))
+            <div className="flex-1 min-w-0 flex flex-col justify-center gap-1">
+                <h3 className="font-semibold text-sm sm:text-base truncate" title={game.name}>
+                    {game.name}
+                </h3>
+
+                <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                    {isSteam ? (
+                        <>
+                             <div className="flex items-center gap-1">
+                                <Monitor className="h-3 w-3" />
+                                <span>Digital</span>
+                             </div>
+                             <span className="text-primary font-medium">{game.playtimeHours} hrs</span>
+                        </>
                     ) : (
-                            <Badge variant="outline" className="text-[10px] h-5 px-1.5 text-muted-foreground border-dashed">
-                            No Tags
-                        </Badge>
+                        <>
+                             <div className="flex items-center gap-1">
+                                <Dice5 className="h-3 w-3" />
+                                <span>Tabletop</span>
+                             </div>
+                             <span>{game.playingTime}m • {game.minPlayers}-{game.maxPlayers}p</span>
+                        </>
                     )}
                 </div>
-            )}
-        </CardContent>
+
+                {isSteam && game.tags && game.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-1">
+                        {game.tags.slice(0, 3).map(tag => (
+                            <Badge key={tag} variant="secondary" className="text-[10px] h-4 px-1 font-normal">
+                                {tag}
+                            </Badge>
+                        ))}
+                         {game.tags.length > 3 && (
+                             <span className="text-[10px] text-muted-foreground self-center">+{game.tags.length - 3}</span>
+                        )}
+                    </div>
+                )}
+            </div>
+          </div>
         </Card>
       );
   };
 
   const renderSkeletons = () => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
     {Array.from({ length: 6 }).map((_, i) => (
         <Card key={i} className="overflow-hidden">
-        <div className="p-0">
-            <AspectRatio ratio={1}>
-            <Skeleton className="h-full w-full" />
-            </AspectRatio>
+        <div className="flex flex-row p-4 gap-4 items-center">
+            <Skeleton className="w-20 h-20 rounded-md flex-shrink-0" />
+            <div className="flex-1 space-y-2">
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-3 w-1/2" />
+            </div>
         </div>
-        <CardContent className="p-4">
-            <Skeleton className="h-4 w-3/4 mb-2" />
-            <Skeleton className="h-3 w-1/2" />
-        </CardContent>
         </Card>
     ))}
     </div>
@@ -302,7 +296,7 @@ export default function Home() {
                     <>
                         <TabsContent value="all">
                              {allGames.length > 0 ? (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {allGames.map(renderGameCard)}
                                 </div>
                              ) : showEmptyState ? (
@@ -311,7 +305,7 @@ export default function Home() {
                         </TabsContent>
                         <TabsContent value="boardgames">
                             {bggGames.length > 0 ? (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {bggGames.map(renderGameCard)}
                                 </div>
                              ) : searchedBgg && !bggLoading ? (
@@ -320,7 +314,7 @@ export default function Home() {
                         </TabsContent>
                         <TabsContent value="videogames">
                              {steamGames.length > 0 ? (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {steamGames.map(renderGameCard)}
                                 </div>
                              ) : searchedSteam && !steamLoading ? (
