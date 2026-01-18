@@ -113,21 +113,6 @@ export async function enrichGames(games: UnifiedGame[]): Promise<UnifiedGame[]> 
   // But given "Sort games... Take top 20", I'll assume the *purpose* of sorting is just to select candidates.
   // I will construct a map of enriched data and merge it back into the *original* array to be perfectly safe with "Return the original list".
 
-  const enrichedMap = new Map<string, string[]>();
-  // top20 now has tags populated (either from cache or fetch)
-  for (const game of top20) {
-    if (game.tags) {
-      enrichedMap.set(game.id, game.tags);
-    }
-  }
-
-  // Iterate over the *original* input `games` array and apply tags
-  const finalGames = games.map(game => {
-    if (enrichedMap.has(game.id)) {
-      return { ...game, tags: enrichedMap.get(game.id) };
-    }
-    return game;
-  });
-
-  return finalGames;
+  // Return the sorted list with the tags field populated for the top 20 games
+  return sortedGames;
 }
