@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -11,10 +10,21 @@ import { RefreshCw, Gamepad2, Dice5, Monitor } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { UnifiedGame } from "@/lib/types";
+import { useLocalStorageHistory } from "@/hooks/use-local-storage-history";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox";
 
 export default function Home() {
   const [bggUsername, setBggUsername] = useState("");
   const [steamId, setSteamId] = useState("");
+
+  const { history: bggHistory, addToHistory: addBggHistory } = useLocalStorageHistory("bgg_history");
+  const { history: steamHistory, addToHistory: addSteamHistory } = useLocalStorageHistory("steam_history");
 
   const [bggGames, setBggGames] = useState<UnifiedGame[]>([]);
   const [steamGames, setSteamGames] = useState<UnifiedGame[]>([]);
@@ -58,6 +68,7 @@ export default function Home() {
              source: 'bgg'
         }));
         setBggGames(games);
+        addBggHistory(bggUsername);
         if (games.length === 0) {
            // Handled by empty state in UI
         } else {
@@ -104,6 +115,7 @@ export default function Home() {
           } else {
               const games: UnifiedGame[] = data.games || [];
               setSteamGames(games);
+              addSteamHistory(steamId);
               toast.success(`Found ${games.length} Steam games!`);
           }
 
@@ -241,13 +253,28 @@ export default function Home() {
                         <Dice5 className="h-4 w-4" /> BoardGameGeek
                     </label>
                     <div className="flex gap-2">
-                         <Input
-                        placeholder="Username"
-                        value={bggUsername}
-                        onChange={(e) => setBggUsername(e.target.value)}
-                        onKeyDown={handleKeyDownBGG}
-                        className="flex-1"
-                        />
+                         <div className="flex-1">
+                           <Combobox
+                             items={bggHistory}
+                             inputValue={bggUsername}
+                             onInputValueChange={(val) => setBggUsername(val)}
+                           >
+                              <ComboboxInput
+                                placeholder="Username"
+                                onKeyDown={handleKeyDownBGG}
+                                className="w-full"
+                              />
+                              <ComboboxContent>
+                                <ComboboxList>
+                                  {(item) => (
+                                    <ComboboxItem key={item} value={item}>
+                                      {item}
+                                    </ComboboxItem>
+                                  )}
+                                </ComboboxList>
+                              </ComboboxContent>
+                           </Combobox>
+                         </div>
                         <Button onClick={fetchBGG} disabled={bggLoading} variant="outline" size="icon">
                         {bggLoading ? (
                             <RefreshCw className="h-4 w-4 animate-spin" />
@@ -267,13 +294,28 @@ export default function Home() {
                         <Monitor className="h-4 w-4" /> Steam
                     </label>
                     <div className="flex gap-2">
-                         <Input
-                        placeholder="Steam ID / Vanity URL"
-                        value={steamId}
-                        onChange={(e) => setSteamId(e.target.value)}
-                        onKeyDown={handleKeyDownSteam}
-                        className="flex-1"
-                        />
+                         <div className="flex-1">
+                           <Combobox
+                             items={steamHistory}
+                             inputValue={steamId}
+                             onInputValueChange={(val) => setSteamId(val)}
+                           >
+                              <ComboboxInput
+                                placeholder="Steam ID / Vanity URL"
+                                onKeyDown={handleKeyDownSteam}
+                                className="w-full"
+                              />
+                              <ComboboxContent>
+                                <ComboboxList>
+                                  {(item) => (
+                                    <ComboboxItem key={item} value={item}>
+                                      {item}
+                                    </ComboboxItem>
+                                  )}
+                                </ComboboxList>
+                              </ComboboxContent>
+                           </Combobox>
+                         </div>
                         <Button onClick={fetchSteam} disabled={steamLoading} variant="outline" size="icon">
                         {steamLoading ? (
                             <RefreshCw className="h-4 w-4 animate-spin" />
